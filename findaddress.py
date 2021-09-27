@@ -17,6 +17,7 @@ workbook = openpyxl.load_workbook(path)
 
 namecol = null
 citycol = null
+addresscol = null
 
 for sheet in workbook.worksheets:
     titlerow = sheet[1]
@@ -26,6 +27,12 @@ for sheet in workbook.worksheets:
             namecol = cell.column
         if cell.value = 'City':
             citycol = cell.column
+        if cell.value = 'Address':
+            addresscol = cell.column
+        else:
+            sheet.insert_cols(5)
+            addresscol = sheet['E']
+
     if namecol = null:
         break
     for row in sheet.iter_rows():
