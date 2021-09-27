@@ -48,7 +48,7 @@ for sheet in workbook.worksheets:
     if addresscol = null:
         sheet.insert_cols(5)
         addresscol = sheet['E']
-        sheet['E1'] = "Address"
+        sheet['E1'] = 'Address'
     for row in sheet.iter_rows(min_row=2):
         # search for address
         name = row[namecol].value
