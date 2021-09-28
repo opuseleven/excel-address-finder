@@ -26,6 +26,7 @@ driver = webdriver.Firefox(options=driver_options)
 
 def search(term):
     driver.get("https://www.duckduckgo.com/?q=%s" % term)
+    print(term)
     time.sleep(2)
     list = driver.find_elements(By.CSS_SELECTOR, "p")
     addressfound = False
@@ -40,6 +41,7 @@ def search(term):
     print(address)
     return address
 
+print("Searching for addresses:")
 for sheet in workbook.worksheets:
     titlerow = sheet[1]
     state = sheet.title
@@ -67,7 +69,6 @@ for sheet in workbook.worksheets:
         name = row[namecol].value
         city = row[citycol].value
         searchterm = str("%s %s %s"%(name, city, state))
-        print(searchterm)
         if searchterm.startswith('None'):
             address = ' '
         else:
