@@ -28,15 +28,13 @@ def search(term):
     driver.get("https://www.duckduckgo.com/?q=%s" % term)
     time.sleep(2)
     list = driver.find_elements(By.CSS_SELECTOR, "p")
-    if len(list) > 10:
-        addressline = list[9]
-    else:
-        return -1
-    print(addressline.text)
-    if addressline.text.startswith('Address:'):
-        addressarr = addressline.text.split(': ')
-        address = addressarr[1]
-    else:
+    addressfound = False
+    for l in list:
+        if l.text.startswith('Address:'):
+            addressarr = l.text.split(': ')
+            address = addressarr[1]
+            addressfound = True
+    if addressfound == False:
         print("Couldn't find that address.")
         address = " "
     print(address)
@@ -70,9 +68,11 @@ for sheet in workbook.worksheets:
         city = row[citycol].value
         searchterm = str("%s %s %s"%(name, city, state))
         print(searchterm)
-        address = search(searchterm)
-        if address != -1:
-            row[addresscol].value = address
+        if searchterm.startswith('None'):
+            address = ' '
+        else:
+            address = search(searchterm)
+        row[addresscol].value = address
 
 def tearDown(self):
     self.quit()
@@ -80,6 +80,8 @@ def tearDown(self):
 tearDown(driver)
 
 # Write workbook
+print("Writing file...")
 split_filename = os.path.splitext(filename)
 new_filename = split_filename[0] + '-address' + split_filename[1]
 workbook.save(new_filename)
+print("Done.")
