@@ -25,37 +25,54 @@ driver_options.headless = True
 driver = webdriver.Firefox(options=driver_options)
 
 def search(term):
-    driver.get("https://www.google.com/search?q=%s" % term)
+    driver.get("https://www.duckduckgo.com/?q=%s" % term)
     time.sleep(2)
-    address = driver.find_element(By.CLASS_NAME, "LrzXr")
-    return address.text
+    list = driver.find_elements(By.CSS_SELECTOR, "p")
+    if len(list) > 10:
+        addressline = list[9]
+    else:
+        return -1
+    print(addressline.text)
+    if addressline.text.startswith('Address:'):
+        addressarr = addressline.text.split(': ')
+        address = addressarr[1]
+    else:
+        print("Couldn't find that address.")
+        address = " "
+    print(address)
+    return address
 
 for sheet in workbook.worksheets:
     titlerow = sheet[1]
     state = sheet.title
-    namecol = null
-    citycol = null
-    addresscol = null
+    print('state: %s'% state)
+    namecol = -1
+    citycol = -1
+    addresscol = -1
+    count = 0
     for cell in titlerow:
         if cell.value == 'Name':
-            namecol = cell.column
+            namecol = count
         if cell.value == 'City':
-            citycol = cell.column
+            citycol = count
         if cell.value == 'Address':
-            addresscol = cell.column
-    if namecol == null:
+            addresscol = count
+        count += 1
+    if namecol == -1:
         break
-    if addresscol == null:
+    if addresscol == -1:
         sheet.insert_cols(5)
-        addresscol = sheet['E']
-        sheet['E1'] = 'Address'
+        addresscol = 4
+        sheet['E1'].value = 'Address'
     for row in sheet.iter_rows(min_row=2):
         # search for address
         name = row[namecol].value
         city = row[citycol].value
-        searchterm = Str("%s %s %s"%(name, city, state))
+        searchterm = str("%s %s %s"%(name, city, state))
+        print(searchterm)
         address = search(searchterm)
-        row[addresscol] = address
+        if address != -1:
+            row[addresscol].value = address
 
 def tearDown(self):
     self.quit()
