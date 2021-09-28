@@ -37,15 +37,15 @@ for sheet in workbook.worksheets:
     citycol = null
     addresscol = null
     for cell in titlerow:
-        if cell.value = 'Name':
+        if cell.value == 'Name':
             namecol = cell.column
-        if cell.value = 'City':
+        if cell.value == 'City':
             citycol = cell.column
-        if cell.value = 'Address':
+        if cell.value == 'Address':
             addresscol = cell.column
-    if namecol = null:
+    if namecol == null:
         break
-    if addresscol = null:
+    if addresscol == null:
         sheet.insert_cols(5)
         addresscol = sheet['E']
         sheet['E1'] = 'Address'
