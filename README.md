@@ -1,2 +1,5 @@
 # excel-address-finder
-A python script that takes an excel document as input, recognizes a columns labeled "Name", and "City". Then creates a new column labeled "Address". The addresses are then written to a new excel file "FileName-addresses" with added "Address" column. 
+
+A command line program to search for the addresses of a large number of businesses/locations in a spreadsheet. The python script takes an excel document as input, recognizes columns labeled "Name", and "City". Then creates a new column labeled "Address". The program then scrapes the web for the addresses. Finally, the addresses are written to a new copy of the excel file "FileName-addresses.xlsx" with added "Address" column. 
+
+Usage: python3 findaddress.py filename.xlsx
