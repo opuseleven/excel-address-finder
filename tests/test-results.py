@@ -1,3 +1,5 @@
+#! python3
+
 import sys
 import os
 import openpyxl
@@ -11,11 +13,10 @@ path = os.path.join(os.getcwd(), filename)
 
 workbook = openpyxl.load_workbook(path)
 
+print('Counting...')
+
 objcount = 0
 addresscount = 0
-
-def skip():
-    return
 
 for sheet in workbook.worksheets:
     titlerow = sheet[1]
