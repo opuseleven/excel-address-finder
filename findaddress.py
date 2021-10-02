@@ -45,6 +45,7 @@ print("Searching for addresses:")
 for sheet in workbook.worksheets:
     titlerow = sheet[1]
     state = sheet.title
+    print('\n')
     print('state: %s'% state)
     namecol = -1
     citycol = -1
