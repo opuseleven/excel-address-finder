@@ -36,7 +36,7 @@ def search(term):
     for l in list:
         count = count + 1
         cityName = term[1].split(', ')[0]
-        pattern2 = str("\S+\sin\s%s" % cityName.capitalize())
+        pattern2 = str("\S+\sin\s%s" % cityName.title())
         if re.search(pattern2, l.text):
             address = list[count].text
             addressfound = True
@@ -44,6 +44,7 @@ def search(term):
         print("Couldn't find that address.")
         address = " "
     print(address)
+    print("\n")
     return address
 
 print("Searching for addresses:")
