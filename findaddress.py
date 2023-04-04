@@ -8,6 +8,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
+import re
 
 if len(sys.argv) < 2:
     print('Usage: python3 findaddress.py filename.xlsx')
@@ -25,15 +26,19 @@ driver_options.headless = True
 driver = webdriver.Firefox(options=driver_options)
 
 def search(term):
-    driver.get("https://www.duckduckgo.com/?q=%s" % term)
-    print(term)
+    query = str("%s %s" % (term[0], term[1]))
+    driver.get("https://www.duckduckgo.com/?q=%s&kz=1&kp=-2" % query)
+    print(query)
     time.sleep(2)
     list = driver.find_elements(By.CSS_SELECTOR, "p")
     addressfound = False
+    count = 0
     for l in list:
-        if l.text.startswith('Address:'):
-            addressarr = l.text.split(': ')
-            address = addressarr[1]
+        count = count + 1
+        cityName = term[1].split(', ')[0]
+        pattern2 = str("\S+\sin\s%s" % cityName.capitalize())
+        if re.search(pattern2, l.text):
+            address = list[count].text
             addressfound = True
     if addressfound == False:
         print("Couldn't find that address.")
@@ -69,8 +74,9 @@ for sheet in workbook.worksheets:
         # search for address
         name = row[namecol].value
         city = row[citycol].value
-        searchterm = str("%s %s %s"%(name, city, state))
-        if searchterm.startswith('None'):
+        location = str("%s, %s" % (city, state))
+        searchterm = [name, location]
+        if str(searchterm[0]).startswith('None'):
             address = ' '
         else:
             address = search(searchterm)
