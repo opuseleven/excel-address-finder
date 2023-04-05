@@ -3,6 +3,7 @@
 import sys
 import os
 import openpyxl
+import re
 
 if len(sys.argv) < 2:
     print('Usage: python3 test-results.py filename-address.xlsx')
@@ -32,7 +33,9 @@ for sheet in workbook.worksheets:
     for row in sheet.iter_rows(min_row=2):
         if row[0].value:
             objcount += 1
-            if row[addresscol].value != ' ':
+            pattern = "\d.+[A-Za-z]+,\s[A-Z]{2}\s\d{5}-?\d{0,4}.*"
+            # if row[addresscol].value != ' ':
+            if re.match(pattern, row[addresscol].value):
                 addresscount += 1
 addstring = str(addresscount)
 totalstring = str(objcount)
