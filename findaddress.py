@@ -32,6 +32,7 @@ def search(term):
     time.sleep(2)
     list = driver.find_elements(By.CSS_SELECTOR, "p")
     addressfound = False
+    address = ""
     count = 0
     for l in list:
         count = count + 1
@@ -41,10 +42,29 @@ def search(term):
             address = list[count].text
             addressfound = True
     if addressfound == False:
-        print("Couldn't find that address.")
-        address = " "
+        backupResults = backupSearch(term)
+        if backupResults != "":
+            addressfound = True
+            address = backupResults
+        else:
+            print("Couldn't find that address.")
+            address = " "
     print(address)
     print("\n")
+    return address
+
+def backupSearch(term):
+    query = str("%s %s" % (term[0], term[1]))
+    driver.get("https://www.google.com/search?q=%s" % query)
+    time.sleep(2)
+    list = driver.find_elements(By.CSS_SELECTOR, "span")
+    count = 0
+    address = ""
+    for l in list:
+        count = count + 1
+        if "Address:" in l.text:
+            address = list[count + 1].text
+            break
     return address
 
 print("Searching for addresses:")
