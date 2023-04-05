@@ -72,7 +72,7 @@ def backupSearch(term):
             elif re.match(pat, list[count + 2].text):
                 address = list[count + 2].text
                 break
-        if address = "":
+        if address == "":
             if re.match(pat, l.text):
                 address = l.text
                 break
