@@ -40,8 +40,10 @@ def search(term):
         pattern = str("\S+\sin\s%s" % cityName.title())
         if re.search(pattern, l.text):
             address = list[count].text
-            addressfound = True
-            break
+            pat = "\d.+[A-Za-z]+,\s[A-Z]{2}\s\d{5}-?\d{0,4}.*"
+            if re.match(pat, address):
+                addressfound = True
+                break
     if addressfound == False:
         backupResults = backupSearch(term)
         if backupResults != "":
@@ -64,7 +66,7 @@ def backupSearch(term):
     for l in list:
         count = count + 1
         # Fairly inclusive regex for US address
-        pat = "\d.+[A-Za-z]+,\s[A-Z]{2}\s\d{5}-?\d{0,4}"
+        pat = "\d.+[A-Za-z]+,\s[A-Z]{2}\s\d{5}-?\d{0,4}.*"
         if "Address:" in l.text:
             if re.match(pat, list[count + 1].text):
                 address = list[count + 1].text
