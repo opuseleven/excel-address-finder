@@ -37,8 +37,8 @@ def search(term):
     for l in list:
         count = count + 1
         cityName = term[1].split(', ')[0]
-        pattern2 = str("\S+\sin\s%s" % cityName.title())
-        if re.search(pattern2, l.text):
+        pattern = str("\S+\sin\s%s" % cityName.title())
+        if re.search(pattern, l.text):
             address = list[count].text
             addressfound = True
     if addressfound == False:
@@ -62,9 +62,18 @@ def backupSearch(term):
     address = ""
     for l in list:
         count = count + 1
+        # Fairly inclusive regex for US address
+        pat = "\d.+[A-Za-z]+,\s[A-Z]{2}\s\d{5}-?\d{0,4}"
         if "Address:" in l.text:
-            address = list[count + 1].text
-            break
+            if re.match(pat, list[count + 1].text):
+                address = list[count + 1].text
+                break
+            elif re.match(pat, list[count + 2].text):
+                address = list[count + 2].text
+                break
+        if address = "":
+            if re.match(pat, l.text):
+                address = l.text
     return address
 
 print("Searching for addresses:")
