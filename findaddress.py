@@ -41,6 +41,7 @@ def search(term):
         if re.search(pattern, l.text):
             address = list[count].text
             addressfound = True
+            break
     if addressfound == False:
         backupResults = backupSearch(term)
         if backupResults != "":
@@ -74,6 +75,7 @@ def backupSearch(term):
         if address = "":
             if re.match(pat, l.text):
                 address = l.text
+                break
     return address
 
 print("Searching for addresses:")
