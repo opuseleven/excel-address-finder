@@ -1,5 +1,7 @@
 #! python3
 
+# TEST
+
 import sys
 import os
 import openpyxl
@@ -39,4 +41,15 @@ for sheet in workbook.worksheets:
                 addresscount += 1
 addstring = str(addresscount)
 totalstring = str(objcount)
+percentage = (addresscount / objcount) * 100
+percentage = round(percentage, 2)
+stdcolor = '\033[0m' # white
+color = '\033[31m' # red
+if percentage > 59.9:
+    color = '\033[33m' # orange
+if percentage > 74:
+    color = '\033[32m' # green
+perstring = str(percentage)
 print('Found %s addresses out of %s'% (addstring, totalstring))
+printablestring = "{}% successful".format(perstring)
+print(color + printablestring + stdcolor)
